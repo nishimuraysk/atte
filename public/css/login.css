@@ -1,0 +1,75 @@
+.main-theme__block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 0 0 0;
+    font-size: 20px;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.input-form__block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-form {
+    margin: 10px;
+    padding: 10px;
+    width: 350px;
+    height: 40px;
+    background-color: rgb(242, 242, 242);
+    border: solid;
+    border-color: darkgray;
+    border-width: 1px;
+    border-radius: 5px;
+}
+
+.login-button__block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-button {
+    margin: 10px;
+    width: 350px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    background-color: mediumblue;
+    color: white;
+}
+
+.not-member-message__block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-link__block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.not-member-message {
+    font-size: 14px;
+    color: darkgray;
+}
+
+.register-link {
+    margin: -10px;
+    font-size: 14px;
+    text-decoration: none;
+    color: mediumblue;
+}
+
+.input-form__error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: red;
+}
