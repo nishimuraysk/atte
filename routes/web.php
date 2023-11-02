@@ -24,7 +24,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/rest/start', [RestController::class,'start']);
     Route::get('/rest/finish', [RestController::class,'finish']);
     Route::get('/attendance/', [AttendanceController::class, 'redirect']);
-    Route::get('/attendance/{date}/{page}', [AttendanceController::class, 'index']);
+    Route::get('/attendance/{date}', [AttendanceController::class, 'index'])->where( ['date' => '|\d{4}\-\d{1,2}\-\d{1,2}|'] );
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/dashboard', function () {

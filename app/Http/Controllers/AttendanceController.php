@@ -16,14 +16,32 @@ class AttendanceController extends Controller
     public function redirect()
     {
         $today = Carbon::now()->format('Y-m-d');
-        return redirect("/attendance/$today/1");
+        return redirect("/attendance/$today");
     }
 
-    public function index($date, $page = 1)
+    public function index(Request $request, $date)
     {
-        $data = $date;
+        $page = $request->input('page');
 
-        $attendances = Attendance::with('user')->where('date', $data)->Paginate(5);
+        if( is_null($page) ){
+            $page = 1;
+        } else {
+            $page = (int)$page;
+        }
+
+        list($year, $month, $day) = explode('-', $date);
+
+        if(!checkdate($month,$day,$year)){
+            $today = Carbon::now()->format('Y-m-d');
+            return redirect("/attendance/$today");
+        }
+
+        $attendances = Attendance::with('user')->where('date', $date)->Paginate(5);
+
+        if ($page <= 0 || $page > $attendances->lastPage()){
+            return redirect("/attendance/$date");
+        }
+
         $users = User::all();
 
         foreach ($attendances as $attendance) {
@@ -37,9 +55,7 @@ class AttendanceController extends Controller
 
                 if( empty($finishRestTime) ){
                     $differenceRestTime = null;
-                }
-
-                else{
+                } else {
                     $differenceRestTime = strtotime($finishRestTime) - strtotime($startRestTime);
                 }
 
@@ -51,21 +67,21 @@ class AttendanceController extends Controller
 
             if( !empty($finishWorkTime) ){
                 $attendanceTimeSum = strtotime($finishWorkTime) - strtotime($startWorkTime) - $restTimeSum;
-            }
 
-            else {
-                $attendanceTimeSum = 0;
-            }
+                $attendance['restTimeSum'] = gmdate("H:i:s", $restTimeSum);
+                $attendance['attendanceTimeSum'] = gmdate("H:i:s", $attendanceTimeSum);
+            } else {
+                $attendanceTimeSum = null;
 
-            $attendance['restTimeSum'] = gmdate("H:i:s", $restTimeSum);
-            $attendance['attendanceTimeSum'] = gmdate("H:i:s", $attendanceTimeSum);
+                $attendance['restTimeSum'] = gmdate("H:i:s", $restTimeSum);
+            }
         }
 
-        $dayBefore  = date('Y-m-d', strtotime($data . '-1 day'));
+        $dayBefore  = date('Y-m-d', strtotime($date . '-1 day'));
 
-        $nextDay = date('Y-m-d', strtotime($data . '+1 day'));
+        $nextDay = date('Y-m-d', strtotime($date . '+1 day'));
 
-        return view('attendance', ['data'=>$data, 'attendances'=>$attendances, 'dayBefore'=>$dayBefore, 'nextDay'=>$nextDay, 'users'=>$users]);
+        return view('attendance', ['data'=>$date, 'attendances'=>$attendances, 'dayBefore'=>$dayBefore, 'nextDay'=>$nextDay, 'users'=>$users]);
     }
 
     public function start()
