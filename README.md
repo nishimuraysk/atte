@@ -19,6 +19,8 @@ https://github.com/nishimuraysk/atte/assets/140567528/c676571b-ff83-4c12-b70d-4e
 
 ## アプリケーションURL
 デプロイURL：未定
+http://localhost/
+http://localhost:8080/index.php
 テスト用のユーザーデータは以下のファイルにあるのでログイン時に活用ください。
 UsersTableSeeder.php
 
